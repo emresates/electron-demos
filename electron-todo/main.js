@@ -4,7 +4,8 @@ const path = require('path');
 const { Menu, ipcMain } = require('electron');
 const { BrowserWindow, app } = electron;
 
-let mainWindow;
+let mainWindow, addWindow;
+let todoList = [];
 
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/node_modules/electron`),
@@ -16,6 +17,7 @@ app.on('ready', () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true,
     },
   });
 
@@ -30,10 +32,33 @@ app.on('ready', () => {
     })
   );
 
+  //* Menünün oluşturulması
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   Menu.setApplicationMenu(mainMenu);
+
+  //* New Todo Penceresi Eventleri
+  //* Cancel
+  ipcMain.on('newTodo:close', () => {
+    addWindow.close();
+    addWindow = null;
+  });
+  //* Save
+  ipcMain.on('newTodo:save', (err, data) => {
+    if (data) {
+      todoList.push({
+        id: todoList.length + 1,
+        text: data,
+      });
+
+      mainWindow.webContents.send('todo:addItem', todoList);
+
+      addWindow.close();
+      addWindow = null;
+    }
+  });
 });
 
+//* Menu Template
 const mainMenuTemplate = [
   {
     label: 'Dosya',
@@ -88,6 +113,11 @@ function createWindow() {
     width: 488,
     height: 240,
     title: 'New Window',
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
   });
 
   addWindow.setResizable(false);
@@ -103,4 +133,8 @@ function createWindow() {
   addWindow.on('close', () => {
     addWindow = null;
   });
+}
+
+function getTodoList() {
+  console.log(todoList);
 }
