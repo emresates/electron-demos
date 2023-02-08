@@ -36,6 +36,11 @@ app.on('ready', () => {
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   Menu.setApplicationMenu(mainMenu);
 
+  ipcMain.on('todo:close', () => {
+    app.quit();
+    addWindow = null;
+  });
+
   //* New Todo Penceresi Eventleri
   //* Cancel
   ipcMain.on('newTodo:close', () => {
@@ -47,15 +52,17 @@ app.on('ready', () => {
     if (data) {
       let todo = {
         id: todoList.length + 1,
-        text: data,
+        text: data.todoValue,
       };
 
       todoList.push(todo);
 
       mainWindow.webContents.send('todo:addItem', todo);
 
-      addWindow.close();
-      addWindow = null;
+      if (data.ref == 'new') {
+        addWindow.close();
+        addWindow = null;
+      }
     }
   });
 });
