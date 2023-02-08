@@ -45,12 +45,14 @@ app.on('ready', () => {
   //* Save
   ipcMain.on('newTodo:save', (err, data) => {
     if (data) {
-      todoList.push({
+      let todo = {
         id: todoList.length + 1,
         text: data,
-      });
+      };
 
-      mainWindow.webContents.send('todo:addItem', todoList);
+      todoList.push(todo);
+
+      mainWindow.webContents.send('todo:addItem', todo);
 
       addWindow.close();
       addWindow = null;
