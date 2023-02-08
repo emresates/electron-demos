@@ -1,0 +1,15 @@
+{
+  "name": "electron-todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "emre ates",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^23.0.0",
+    "electron-reload": "^2.0.0-alpha.1"
+  }
+}

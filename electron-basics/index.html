@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Project</title>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <input type="text" id="inputValue" />
+    <button id="sendBtn">Send</button>
+    <button id="openNew">Open new window</button>
+
+    <script>
+      const electron = require('electron');
+      const { ipcRenderer } = electron; //Event şeklinde veriyi yollar
+
+      let sendBtn = document.querySelector('#sendBtn');
+      let inputValue = document.querySelector('#inputValue');
+      let openNew = document.querySelector('#openNew');
+
+      openNew.addEventListener('click', () => {
+        ipcRenderer.send('key:newWindow');
+      });
+
+      sendBtn.addEventListener('click', () => {
+        // ipcRenderer.send('key', 'deneme | electron js');
+        ipcRenderer.send('key:inputValue', inputValue.value);
+      });
+    </script>
+  </body>
+</html>
