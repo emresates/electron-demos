@@ -11,6 +11,7 @@ let todoList = [];
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/node_modules/electron`),
 });
+
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
     // frame: false, //Çerçeveyi kaldırır
