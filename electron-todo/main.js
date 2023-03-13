@@ -3,6 +3,7 @@ const url = require('url');
 const path = require('path');
 const { Menu, ipcMain } = require('electron');
 const { BrowserWindow, app } = electron;
+const db = require('./lib/connection').db;
 
 let mainWindow, addWindow;
 let todoList = [];
